@@ -2,7 +2,7 @@
  * @Author: htz
  * @Date: 2024-06-01 20:44:01
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-06-02 21:00:40
+ * @LastEditTime: 2024-06-02 21:12:12
  * @Description: 文件上传
 -->
 <template>
@@ -68,7 +68,6 @@ const fileChange = async (event: any) => {
   if (!file) return
   fileData.value = file
 
-  debugger
   // 获取文件的hash
   let already = [],
     data = null,
@@ -92,6 +91,7 @@ const fileChange = async (event: any) => {
   let maxSize = 1024 * 1000
   //文件的总数量
   let count = Math.ceil(file.size / maxSize)
+  // 索引用于记录切片的顺序
   let index = 0
   let chunks = []
   // 总数超过100 总数就是100
@@ -159,6 +159,7 @@ const fileChange = async (event: any) => {
       .post('/upload_chunk', fm)
       .then((res) => {
         if (+res.code === 0) {
+          //上传成功看所有文件是否完好上传了
           complete()
           return
         }
